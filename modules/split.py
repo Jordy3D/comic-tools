@@ -25,10 +25,16 @@ class Chapter:
 
 
 def find_chapter_and_volume(file_name):
-    # look for someting like c001 in the file name
-    ch_pattern = re.compile(r"c(\d+)")
+    # look for something like c001#1 in the file name
+    ch_pattern = re.compile(r"c(\d+)(#\d+)")
     chapter = re.search(ch_pattern, file_name)
-    chapter = "" if chapter is None else chapter.group(1)
+    # chapter becomes 001#1
+    chapter = "" if chapter is None else f"{chapter.group(1)}{chapter.group(2)}"
+    if chapter == "":
+        # look for someting like c001 in the file name
+        ch_pattern = re.compile(r"c(\d+)")
+        chapter = re.search(ch_pattern, file_name)
+        chapter = "" if chapter is None else chapter.group(1)
     
     vol_pattern = re.compile(r"v(\d+)")  # Matches both v(01) and v01
     volume = re.search(vol_pattern, file_name)
